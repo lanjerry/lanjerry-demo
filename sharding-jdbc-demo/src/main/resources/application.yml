@@ -1,0 +1,14 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: sharding-jdbc-demo
+  profiles:
+    active:
+    - readwrite
+  shardingsphere:
+    mode:
+      type: Memory
+    # 打印SQl
+    props:
+      sql-show: true
