@@ -13,8 +13,8 @@ import lombok.Data;
  * @author linjierong
  * @since 2024-02-21
  */
-@TableName("t_user")
 @Data
+@TableName("t_user")
 public class User {
 
     @TableId(type = IdType.AUTO)
