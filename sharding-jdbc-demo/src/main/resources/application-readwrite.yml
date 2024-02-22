@@ -36,7 +36,7 @@ spring:
               # 读数据源名称，多个从数据源用逗号分隔
               read-data-source-names: slave1,slave2
             # 负载均衡算法名称
-            load-balancer-name:  alg_round
+            load-balancer-name: alg_weight
         # 负载均衡算法配置
         load-balancers:
           # 轮询
@@ -45,7 +45,7 @@ spring:
           # 随机
           alg_random:
             type: RANDOM
-          # 权重
+          # 权重，使用中的读库都必须配置权重
           alg_weight:
             type: WEIGHT
             props:

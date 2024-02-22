@@ -43,4 +43,12 @@ public class ReadWriteTest {
         List<User> users = userMapper.selectList(null);
         users.forEach(System.out::println);
     }
+
+    @Test
+    public void testSelectAll() {
+        List<User> users1 = userMapper.selectList(null);
+        List<User> users2 = userMapper.selectList(null);
+        List<User> users3 = userMapper.selectList(null);
+        List<User> users4 = userMapper.selectList(null);
+    }
 }
