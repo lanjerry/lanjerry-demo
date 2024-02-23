@@ -9,6 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * <p>
+ * 读写分离测试
+ * </p>
+ *
+ * @author linjierong
+ * @since 2024-02-23
+ */
 @SpringBootTest
 public class ReadWriteTest {
 

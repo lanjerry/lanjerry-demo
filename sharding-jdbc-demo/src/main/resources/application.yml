@@ -5,7 +5,7 @@ spring:
     name: sharding-jdbc-demo
   profiles:
     active:
-      - vertical
+      - horizontal
   shardingsphere:
     mode:
       type: Memory

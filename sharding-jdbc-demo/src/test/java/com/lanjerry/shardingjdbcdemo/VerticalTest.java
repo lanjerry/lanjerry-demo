@@ -10,6 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 
+/**
+ * <p>
+ * 垂直分片测试
+ * </p>
+ *
+ * @author linjierong
+ * @since 2024-02-23
+ */
 @SpringBootTest
 public class VerticalTest {
 
