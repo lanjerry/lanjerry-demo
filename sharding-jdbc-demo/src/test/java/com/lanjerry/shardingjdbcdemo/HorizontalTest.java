@@ -39,9 +39,9 @@ public class HorizontalTest {
      */
     @Test
     public void testInsertOrderDatabaseStrategy() {
-        for (long i = 0; i < 4; i++) {
+        for (long i = 4; i < 8; i++) {
             Order order = new Order();
-            order.setOrderNo("LANJERRY001");
+            order.setOrderNo("LANJERRY003");
             order.setUserId(i + 1);
             order.setAmount(new BigDecimal(100));
             orderMapper.insert(order);

@@ -33,12 +33,20 @@ spring:
                 # 分片列名称
                 sharding-column: user_id
                 # 分片算法名称
-                sharding-algorithm-name: alg_inline_userid
+                sharding-algorithm-name: alg_mod
         # 分片算法配置
         sharding-algorithms:
+          # 行表达式分片算法
           alg_inline_userid:
             # 分片算法类型
             type: INLINE
             # 分片算法属性配置
             props:
               algorithm-expression: server-order-332$->{user_id % 2}
+          # 取模分片算法
+          alg_mod:
+            # 分片算法类型
+            type: MOD
+            # 分片算法属性配置
+            props:
+              sharding-count: 1
