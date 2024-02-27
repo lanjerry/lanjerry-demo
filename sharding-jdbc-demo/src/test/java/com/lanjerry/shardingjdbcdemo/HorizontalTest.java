@@ -2,6 +2,8 @@ package com.lanjerry.shardingjdbcdemo;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lanjerry.shardingjdbcdemo.entity.Order;
+import com.lanjerry.shardingjdbcdemo.entity.OrderItem;
+import com.lanjerry.shardingjdbcdemo.mapper.OrderItemMapper;
 import com.lanjerry.shardingjdbcdemo.mapper.OrderMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class HorizontalTest {
 
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private OrderItemMapper orderItemMapper;
 
     /**
      * 水平分片：插入数据测试
@@ -91,5 +96,41 @@ public class HorizontalTest {
         orderQueryWrapper.eq("user_id", 2L);
         List<Order> orders = orderMapper.selectList(orderQueryWrapper);
         orders.forEach(System.out::println);
+    }
+
+    /**
+     * 测试关联表插入
+     */
+    @Test
+    public void testInsertOrderAndOrderItem() {
+        for (long i = 1; i < 3; i++) {
+            Order order = new Order();
+            order.setOrderNo("LANJERRY" + i);
+            order.setUserId(1L);
+            orderMapper.insert(order);
+            for (long j = 1; j < 3; j++) {
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrderNo("LANJERRY" + i);
+                orderItem.setUserId(1L);
+                orderItem.setPrice(new BigDecimal(10));
+                orderItem.setCount(2);
+                orderItemMapper.insert(orderItem);
+            }
+        }
+
+        for (long i = 5; i < 7; i++) {
+            Order order = new Order();
+            order.setOrderNo("LANJERRY" + i);
+            order.setUserId(2L);
+            orderMapper.insert(order);
+            for (long j = 1; j < 3; j++) {
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrderNo("LANJERRY" + i);
+                orderItem.setUserId(2L);
+                orderItem.setPrice(new BigDecimal(1));
+                orderItem.setCount(3);
+                orderItemMapper.insert(orderItem);
+            }
+        }
     }
 }

@@ -49,6 +49,31 @@ spring:
               column: id
               # 分布式序列算法名称
               key-generator-name: alg_snowflake
+          # t_order_item的分片表、分片策略、分布式序列策略和t_order一致
+          t_order_item:
+            actual-data-nodes: server-order-332$->{0..1}.t_order_item$->{0..1}
+            # 分库策略配置
+            # 分片规则：order表中`user_id`为偶数时，数据插入`server-order-3320服务器`，`user_id`为奇数时，数据插入`server-order-3321服务器`。这样分片的好处是，同一个用户的订单数据，一定会被插入到同一台服务器上，查询一个用户的订单时效率较高
+            database-strategy:
+              standard:
+                # 分片列名称
+                sharding-column: user_id
+                # 分片算法名称
+                sharding-algorithm-name: alg_inline_userid
+            # 分表策略配置
+            # 分片规则：order表中`order_no的哈希值为偶数时`，数据插入对应服务器的`t_order0表`，`order_no的哈希值为奇数时`，数据插入对应服务器的`t_order1表`。因为order_no是字符串形式，因此不能直接取模。
+            table-strategy:
+              standard:
+                # 分片列名称
+                sharding-column: order_no
+                # 分片算法名称
+                sharding-algorithm-name: alg_hash_mod
+            # 分布式序列策略配置
+            key-generate-strategy:
+              # 分布式序列列名称
+              column: id
+              # 分布式序列算法名称
+              key-generator-name: alg_snowflake
         # 分片算法配置
         sharding-algorithms:
           # 行表达式分片算法
