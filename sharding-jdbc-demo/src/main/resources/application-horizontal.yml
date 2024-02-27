@@ -43,6 +43,12 @@ spring:
                 sharding-column: order_no
                 # 分片算法名称
                 sharding-algorithm-name: alg_hash_mod
+            # 分布式序列策略配置
+            key-generate-strategy:
+              # 分布式序列列名称
+              column: id
+              # 分布式序列算法名称
+              key-generator-name: alg_snowflake
         # 分片算法配置
         sharding-algorithms:
           # 行表达式分片算法
@@ -66,3 +72,8 @@ spring:
             # 分片算法属性配置
             props:
               sharding-count: 2
+        # 分布式序列算法配置
+        key-generators:
+          alg_snowflake:
+            # 分布式序列算法类型
+            type: SNOWFLAKE
