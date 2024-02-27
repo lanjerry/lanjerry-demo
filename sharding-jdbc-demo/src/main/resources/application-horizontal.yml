@@ -25,15 +25,24 @@ spring:
           # 值由数据源名 + 表名组成，以小数点分隔。多个表以逗号分隔，支持 inline 表达式。
           t_order:
             # 以下表达式解析结果：server-order-3320.t_order0,server-order-3320.t_order1,server-order-3321.t_order0,server-order-3321.t_order1
-            #actual-data-nodes: server-order-332$->{0..1}.t_order$->{0..1}
-            actual-data-nodes: server-order-332$->{0..1}.t_order0
+            actual-data-nodes: server-order-332$->{0..1}.t_order$->{0..1}
+            #actual-data-nodes: server-order-332$->{0..1}.t_order0
             # 分库策略配置
+            # 分片规则：order表中`user_id`为偶数时，数据插入`server-order-3320服务器`，`user_id`为奇数时，数据插入`server-order-3321服务器`。这样分片的好处是，同一个用户的订单数据，一定会被插入到同一台服务器上，查询一个用户的订单时效率较高
             database-strategy:
               standard:
                 # 分片列名称
                 sharding-column: user_id
                 # 分片算法名称
-                sharding-algorithm-name: alg_mod
+                sharding-algorithm-name: alg_inline_userid
+            # 分表策略配置
+            # 分片规则：order表中`order_no的哈希值为偶数时`，数据插入对应服务器的`t_order0表`，`order_no的哈希值为奇数时`，数据插入对应服务器的`t_order1表`。因为order_no是字符串形式，因此不能直接取模。
+            table-strategy:
+              standard:
+                # 分片列名称
+                sharding-column: order_no
+                # 分片算法名称
+                sharding-algorithm-name: alg_hash_mod
         # 分片算法配置
         sharding-algorithms:
           # 行表达式分片算法
@@ -50,3 +59,10 @@ spring:
             # 分片算法属性配置
             props:
               sharding-count: 1
+          # 哈希取模分片算法
+          alg_hash_mod:
+            # 分片算法类型
+            type: HASH_MOD
+            # 分片算法属性配置
+            props:
+              sharding-count: 2

@@ -47,4 +47,25 @@ public class HorizontalTest {
             orderMapper.insert(order);
         }
     }
+
+    /**
+     * 水平分片：分表插入数据测试
+     */
+    @Test
+    public void testInsertOrderTableStrategy() {
+        for (long i = 1; i < 5; i++) {
+            Order order = new Order();
+            order.setOrderNo("LANJERRY" + i);
+            order.setUserId(i + 1);
+            order.setAmount(new BigDecimal(100));
+            orderMapper.insert(order);
+        }
+        for (long i = 5; i < 9; i++) {
+            Order order = new Order();
+            order.setOrderNo("LANJERRY" + i);
+            order.setUserId(i + 1);
+            order.setAmount(new BigDecimal(100));
+            orderMapper.insert(order);
+        }
+    }
 }
