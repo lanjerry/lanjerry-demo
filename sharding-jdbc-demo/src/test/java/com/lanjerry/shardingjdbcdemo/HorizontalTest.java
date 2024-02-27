@@ -1,5 +1,6 @@
 package com.lanjerry.shardingjdbcdemo;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lanjerry.shardingjdbcdemo.entity.Order;
 import com.lanjerry.shardingjdbcdemo.mapper.OrderMapper;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -67,5 +69,27 @@ public class HorizontalTest {
             order.setAmount(new BigDecimal(100));
             orderMapper.insert(order);
         }
+    }
+
+    /**
+     * 水平分片：查询所有记录
+     * 查询了两个数据源，每个数据源中使用UNION ALL连接两个表
+     */
+    @Test
+    public void testShardingSelectAll() {
+        List<Order> orders = orderMapper.selectList(null);
+        orders.forEach(System.out::println);
+    }
+
+    /**
+     * 水平分片：根据user_id查询记录
+     * 查询了一个数据源，每个数据源中使用UNION ALL连接两个表
+     */
+    @Test
+    public void testShardingSelectByUserId() {
+        QueryWrapper<Order> orderQueryWrapper = new QueryWrapper<>();
+        orderQueryWrapper.eq("user_id", 2L);
+        List<Order> orders = orderMapper.selectList(orderQueryWrapper);
+        orders.forEach(System.out::println);
     }
 }
