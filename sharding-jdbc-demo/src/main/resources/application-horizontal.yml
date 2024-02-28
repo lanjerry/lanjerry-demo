@@ -102,3 +102,7 @@ spring:
           alg_snowflake:
             # 分布式序列算法类型
             type: SNOWFLAKE
+        # 绑定表规则配置
+        # `绑定表：`指分片规则一致的一组分片表。 使用绑定表进行多表关联查询时，必须使用分片键进行关联，否则会出现笛卡尔积关联或跨库关联，从而影响查询效率。
+        binding-tables:
+          - t_order, t_order_item

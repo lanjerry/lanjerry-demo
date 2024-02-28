@@ -5,6 +5,7 @@ import com.lanjerry.shardingjdbcdemo.entity.Order;
 import com.lanjerry.shardingjdbcdemo.entity.OrderItem;
 import com.lanjerry.shardingjdbcdemo.mapper.OrderItemMapper;
 import com.lanjerry.shardingjdbcdemo.mapper.OrderMapper;
+import com.lanjerry.shardingjdbcdemo.vo.OrderVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -132,5 +133,14 @@ public class HorizontalTest {
                 orderItemMapper.insert(orderItem);
             }
         }
+    }
+
+    /**
+     * 测试关联表查询
+     */
+    @Test
+    public void testGetOrderAmount() {
+        List<OrderVO> orderAmountList = orderMapper.getOrderAmount();
+        orderAmountList.forEach(System.out::println);
     }
 }
