@@ -1,8 +1,10 @@
 package com.lanjerry.shardingjdbcdemo;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lanjerry.shardingjdbcdemo.entity.Dict;
 import com.lanjerry.shardingjdbcdemo.entity.Order;
 import com.lanjerry.shardingjdbcdemo.entity.OrderItem;
+import com.lanjerry.shardingjdbcdemo.mapper.DictMapper;
 import com.lanjerry.shardingjdbcdemo.mapper.OrderItemMapper;
 import com.lanjerry.shardingjdbcdemo.mapper.OrderMapper;
 import com.lanjerry.shardingjdbcdemo.vo.OrderVO;
@@ -29,6 +31,9 @@ public class HorizontalTest {
 
     @Autowired
     private OrderItemMapper orderItemMapper;
+
+    @Autowired
+    private DictMapper dictMapper;
 
     /**
      * 水平分片：插入数据测试
@@ -142,5 +147,25 @@ public class HorizontalTest {
     public void testGetOrderAmount() {
         List<OrderVO> orderAmountList = orderMapper.getOrderAmount();
         orderAmountList.forEach(System.out::println);
+    }
+
+    /**
+     * 广播表：每个服务器中的t_dict同时添加了新数据
+     */
+    @Test
+    public void testBroadcast() {
+        Dict dict = new Dict();
+        dict.setDictType("type1");
+        dictMapper.insert(dict);
+    }
+
+    /**
+     * 查询操作，只从一个节点获取数据
+     * 随机负载均衡规则
+     */
+    @Test
+    public void testSelectBroadcast() {
+        List<Dict> dicts = dictMapper.selectList(null);
+        dicts.forEach(System.out::println);
     }
 }
